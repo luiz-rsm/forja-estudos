@@ -1,0 +1,1954 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FORJA — Conhecimento se constrói.</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            petrol: {
+              50: '#f0f7fa',
+              100: '#dceef4',
+              200: '#bcdce8',
+              300: '#8ec2d6',
+              400: '#58a0bf',
+              500: '#3482a6',
+              600: '#256788',
+              700: '#1e536e',
+              800: '#173f54',
+              900: '#0c2b3d',
+              950: '#071b27',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-preserve-3d {
+      transform-style: preserve-3d;
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+    .line-through-dimmed {
+      text-decoration: line-through;
+      opacity: 0.45;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .cloze-hidden {
+      filter: blur(5px);
+      user-select: none;
+      background-color: #0c2b3d;
+      color: transparent;
+      border-radius: 0.25rem;
+      padding: 0 0.35rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .cloze-revealed {
+      filter: none;
+      user-select: auto;
+      background-color: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      border-radius: 0.25rem;
+      padding: 0 0.35rem;
+      font-weight: 600;
+    }
+    @media (max-width: 1023px) {
+      .mobile-drawer {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 85%;
+        max-width: 320px;
+        height: 100vh;
+        z-index: 50;
+        transform: translateX(-100%);
+        transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        overflow-y: auto;
+        border-radius: 0 !important;
+      }
+      .mobile-drawer.mobile-open {
+        transform: translateX(0);
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-orange-500 selection:text-white">
+
+  <header class="bg-petrol-900 border-b border-petrol-800 text-white sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Marca e Título: FORJA -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 via-orange-500 to-amber-400 flex items-center justify-center text-white shadow-md shadow-orange-950/30 ring-1 ring-orange-400/40">
+          <!-- Ícone Emblema Forja / Chamas e Bigorna Estilizada -->
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.001 11c0 1.25-.5 2-1.122 3.121z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-black text-base md:text-lg tracking-wider leading-none text-white font-mono">FORJA</h1>
+            <span class="text-[10px] uppercase font-black tracking-widest bg-orange-500/20 text-orange-300 border border-orange-400/30 px-2 py-0.5 rounded-full">Revisão Ativa</span>
+          </div>
+          <p class="text-[11px] text-orange-200/90 font-medium leading-tight mt-0.5 hidden sm:block tracking-wide">Conhecimento se constrói.</p>
+        </div>
+      </div>
+
+      <!-- Ações do Topo -->
+      <div class="flex items-center gap-2 md:gap-3">
+        <!-- Botão Abrir Biblioteca no Mobile / Tablet -->
+        <button id="btnToggleMobileSidebar" class="lg:hidden flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold bg-petrol-800 hover:bg-petrol-700 text-slate-200 transition border border-petrol-700/60">
+          <svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <span class="text-[11px]">Biblioteca</span>
+        </button>
+
+        <button id="btnHeaderDashboard" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-petrol-800 hover:bg-petrol-700 text-slate-200 transition border border-petrol-700/60">
+          <svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          </svg>
+          <span class="hidden sm:inline">Visão Geral</span>
+        </button>
+
+        <button id="btnOpenNewModal" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-orange-500 hover:bg-orange-600 text-white transition shadow-sm shadow-orange-950/20">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          </svg>
+          <span>Novo Material</span>
+        </button>
+
+        <button id="btnExportAll" title="Exportar toda a biblioteca em JSON" class="p-2 rounded-lg bg-petrol-800 hover:bg-petrol-700 text-slate-300 transition border border-petrol-700/60">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Backdrop para Drawer Mobile -->
+  <div id="sidebarBackdrop" class="fixed inset-0 bg-petrol-950/60 backdrop-blur-xs z-40 hidden lg:hidden"></div>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+    
+    <!-- Barra Lateral: Navegação e Biblioteca de Estudos -->
+    <aside id="appSidebar" class="mobile-drawer lg:col-span-4 bg-white rounded-2xl border border-slate-200/90 shadow-sm p-4 md:p-5 flex flex-col gap-4">
+      
+      <!-- Cabeçalho do Drawer visível apenas no Mobile/Tablet -->
+      <div class="flex items-center justify-between lg:hidden pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-1.5">
+          <span class="text-xs font-black tracking-wider text-orange-600 font-mono">FORJA</span>
+          <span class="text-slate-300">•</span>
+          <span class="text-xs font-bold text-petrol-900">Biblioteca</span>
+        </div>
+        <button id="btnCloseMobileSidebar" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Botão Primário: Dashboard / Visão Geral -->
+      <button id="btnSideDashboard" class="w-full flex items-center justify-between p-3 rounded-xl bg-petrol-900 text-white font-semibold text-xs transition hover:bg-petrol-800 shadow-sm">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-lg bg-petrol-800 flex items-center justify-center text-orange-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+          </div>
+          <span class="tracking-wide">Visão Geral &amp; Métricas</span>
+        </div>
+        <span class="text-[10px] bg-orange-500/20 text-orange-300 font-bold px-2 py-0.5 rounded-full border border-orange-400/20">Hoje</span>
+      </button>
+
+      <!-- Busca e Filtro de Navegação Rápida -->
+      <div class="space-y-2">
+        <div class="relative">
+          <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <input type="text" id="inputSearch" placeholder="Buscar cadernos, leis ou tags..." class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition">
+        </div>
+
+        <!-- Seletor Dropdown para alternância limpa sem poluição visual -->
+        <div class="flex items-center gap-1.5 bg-slate-50 p-1.5 rounded-xl border border-slate-200">
+          <label for="selectFilterScope" class="text-[10px] font-bold text-slate-400 uppercase tracking-wider pl-1.5">Filtro:</label>
+          <select id="selectFilterScope" class="w-full bg-transparent text-xs font-semibold text-petrol-900 focus:outline-none cursor-pointer">
+            <option value="all">Biblioteca: Todos os materiais</option>
+            <option value="type-quiz">Formato: Simulados</option>
+            <option value="type-flashcard">Formato: Flashcards</option>
+            <option value="type-summary">Formato: Resumos Ativos</option>
+            <option value="cat-Direito">Disciplina: Direito</option>
+            <option value="cat-Contabilidade">Disciplina: Contabilidade</option>
+            <option value="cat-TI">Disciplina: TI &amp; Redes</option>
+            <option value="cat-Administracao">Disciplina: Administração</option>
+            <option value="rev-today">Revisão: Revisar hoje</option>
+            <option value="rev-difficulty">Revisão: Tenho dificuldade</option>
+            <option value="rev-pending">Revisão: Pendentes</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Painéis de Navegação Retráteis com Ícones Profissionais SVG -->
+      <div class="space-y-2 border-t border-slate-100 pt-3">
+        
+        <!-- Grupo 1: Formatos de Estudo -->
+        <div class="border border-slate-100 rounded-xl overflow-hidden bg-slate-50/50">
+          <button class="w-full flex items-center justify-between p-2.5 text-xs font-bold text-slate-700 hover:bg-slate-100 transition accordion-btn" data-target="groupFormatos">
+            <span class="flex items-center gap-2">
+              <svg class="w-3.5 h-3.5 text-petrol-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+              </svg>
+              <span>Biblioteca por Formato</span>
+            </span>
+            <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200 accordion-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7 7"/></svg>
+          </button>
+          <div id="groupFormatos" class="p-2 space-y-1 text-xs">
+            <button class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-white text-slate-600 hover:text-petrol-900 transition nav-filter-item" data-filter="type:all">
+              <span class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                <span>Todos os materiais</span>
+              </span>
+              <span id="badgeTotalAll" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-bold">0</span>
+            </button>
+            <button class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-white text-slate-600 hover:text-petrol-900 transition nav-filter-item" data-filter="type:quiz">
+              <span class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                <span>Simulados</span>
+              </span>
+              <span id="badgeTotalQuiz" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-bold">0</span>
+            </button>
+            <button class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-white text-slate-600 hover:text-petrol-900 transition nav-filter-item" data-filter="type:flashcard">
+              <span class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                <span>Flashcards</span>
+              </span>
+              <span id="badgeTotalFlashcard" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-bold">0</span>
+            </button>
+            <button class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-white text-slate-600 hover:text-petrol-900 transition nav-filter-item" data-filter="type:summary">
+              <span class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                <span>Resumos Ativos</span>
+              </span>
+              <span id="badgeTotalSummary" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-bold">0</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Grupo 2: Disciplinas de Concursos -->
+        <div class="border border-slate-100 rounded-xl overflow-hidden bg-slate-50/50">
+          <button class="w-full flex items-center justify-between p-2.5 text-xs font-bold text-slate-700 hover:bg-slate-100 transition accordion-btn" data-target="groupDisciplinas">
+            <span class="flex items-center gap-2">
+              <svg class="w-3.5 h-3.5 text-petrol-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/>
+              </svg>
+              <span>Disciplinas &amp; Grade</span>
+            </span>
+            <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200 accordion-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7 7"/></svg>
+          </button>
+          <div id="groupDisciplinas" class="p-2 space-y-1 text-xs">
+            <button class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-white text-slate-600 hover:text-petrol-900 transition nav-filter-item" data-filter="category:Direito">
+              <span class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
+                <span>Direito</span>
+              </span>
+              <span id="badgeCatDireito" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-bold">0</span>
+            </button>
+            <button class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-white text-slate-600 hover:text-petrol-900 transition nav-filter-item" data-filter="category:Contabilidade">
+              <span class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                <span>Contabilidade</span>
+              </span>
+              <span id="badgeCatContabilidade" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-bold">0</span>
+            </button>
+            <button class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-white text-slate-600 hover:text-petrol-900 transition nav-filter-item" data-filter="category:TI">
+              <span class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>TI &amp; Redes</span>
+              </span>
+              <span id="badgeCatTI" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-bold">0</span>
+            </button>
+            <button class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-white text-slate-600 hover:text-petrol-900 transition nav-filter-item" data-filter="category:Administracao">
+              <span class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                <span>Administração</span>
+              </span>
+              <span id="badgeCatAdministracao" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-bold">0</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Grupo 3: Fluxos de Revisão Ativa -->
+        <div class="border border-slate-100 rounded-xl overflow-hidden bg-slate-50/50">
+          <button class="w-full flex items-center justify-between p-2.5 text-xs font-bold text-slate-700 hover:bg-slate-100 transition accordion-btn" data-target="groupRevisao">
+            <span class="flex items-center gap-2">
+              <svg class="w-3.5 h-3.5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+              <span>Prioridades de Revisão</span>
+            </span>
+            <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200 accordion-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7 7"/></svg>
+          </button>
+          <div id="groupRevisao" class="p-2 space-y-1 text-xs">
+            <button class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-white text-slate-600 hover:text-petrol-900 transition nav-filter-item" data-filter="rev:today">
+              <span class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>Revisar hoje</span>
+              </span>
+              <span id="badgeRevToday" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-orange-100 text-orange-700 font-bold">0</span>
+            </button>
+            <button class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-white text-slate-600 hover:text-petrol-900 transition nav-filter-item" data-filter="rev:difficulty">
+              <span class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                <span>Tenho dificuldade</span>
+              </span>
+              <span id="badgeRevDifficulty" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-rose-100 text-rose-700 font-bold">0</span>
+            </button>
+            <button class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-white text-slate-600 hover:text-petrol-900 transition nav-filter-item" data-filter="rev:pending">
+              <span class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>Pendentes</span>
+              </span>
+              <span id="badgeRevPending" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 font-bold">0</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Lista de Cadernos da Biblioteca -->
+      <div class="space-y-2 pt-2 border-t border-slate-100">
+        <div class="flex items-center justify-between text-xs px-1">
+          <span class="font-bold text-petrol-900 tracking-tight">Cadernos de Estudo</span>
+          <span id="labelFilteredCount" class="text-[11px] text-slate-400 font-medium">0 encontrados</span>
+        </div>
+
+        <div id="materialsList" class="space-y-2 max-h-[380px] overflow-y-auto pr-1">
+          <!-- Injetado dinamicamente via JS -->
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- Área Central: Alterna entre Dashboard e Modo de Estudo Ativo -->
+    <section class="lg:col-span-8 flex flex-col gap-6">
+
+      <!-- ============================================== -->
+      <!-- TELA 1: VISÃO GERAL (DASHBOARD HOJE & RETOMADA) -->
+      <!-- ============================================== -->
+      <div id="viewDashboard" class="space-y-6">
+
+        <!-- Banner com Métricas de Hoje -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+            <div>
+              <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-orange-600 mb-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <span>Visão Geral • Desempenho Hoje</span>
+              </div>
+              <h2 class="text-xl md:text-2xl font-black text-petrol-900 tracking-tight">Metas e Rendimento de Concursos</h2>
+              <p class="text-xs text-slate-500 mt-0.5">Acompanhamento contínuo de retenção ativa e resolução de questões.</p>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <span class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-orange-50 text-orange-700 border border-orange-200 font-bold text-xs">
+                <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/>
+                </svg>
+                <span>4 dias seguidos</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Grade de Indicadores Quantitativos com Ícones Profissionais -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4">
+            
+            <!-- Card 1: Questões Respondidas -->
+            <div class="p-4 rounded-xl border border-slate-200/90 bg-slate-50/60 hover:bg-white hover:border-petrol-200 transition">
+              <div class="flex items-center justify-between text-slate-400 mb-2">
+                <span class="text-xs font-semibold text-slate-600">Questões resolvidas</span>
+                <svg class="w-4 h-4 text-petrol-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <div id="statAnswered" class="text-2xl font-black text-petrol-900 font-mono">42</div>
+              <div class="text-[11px] text-slate-400 mt-1">Meta diária: 50 questões</div>
+            </div>
+
+            <!-- Card 2: Acertos -->
+            <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50/40 hover:bg-emerald-50/80 transition">
+              <div class="flex items-center justify-between text-emerald-600 mb-2">
+                <span class="text-xs font-semibold text-emerald-950">Acertos</span>
+                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <div id="statCorrect" class="text-2xl font-black text-emerald-700 font-mono">31</div>
+              <div id="statAccuracy" class="text-[11px] font-bold text-emerald-800 mt-1">73.8% de aproveitamento</div>
+            </div>
+
+            <!-- Card 3: Erros (Oportunidades de Revisão) -->
+            <div class="p-4 rounded-xl border border-rose-200 bg-rose-50/40 hover:bg-rose-50/80 transition">
+              <div class="flex items-center justify-between text-rose-600 mb-2">
+                <span class="text-xs font-semibold text-rose-950">Erros</span>
+                <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12"/></svg>
+              </div>
+              <div id="statWrong" class="text-2xl font-black text-rose-700 font-mono">11</div>
+              <div class="text-[11px] font-bold text-rose-700 mt-1">Para refazer no motor</div>
+            </div>
+
+            <!-- Card 4: Flashcards Revisados -->
+            <div class="p-4 rounded-xl border border-slate-200/90 bg-slate-50/60 hover:bg-white hover:border-petrol-200 transition">
+              <div class="flex items-center justify-between text-slate-400 mb-2">
+                <span class="text-xs font-semibold text-slate-600">Flashcards</span>
+                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+              </div>
+              <div id="statFlashcards" class="text-2xl font-black text-petrol-900 font-mono">27</div>
+              <div class="text-[11px] text-slate-400 mt-1">Repetição espaçada</div>
+            </div>
+
+            <!-- Card 5: Tempo Estudado -->
+            <div class="p-4 rounded-xl border border-slate-200/90 bg-slate-50/60 hover:bg-white hover:border-petrol-200 transition">
+              <div class="flex items-center justify-between text-slate-400 mb-2">
+                <span class="text-xs font-semibold text-slate-600">Tempo estudado</span>
+                <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <div class="text-2xl font-black text-petrol-900 font-mono">1h42</div>
+              <div class="text-[11px] text-slate-400 mt-1">Foco ativo acumulado</div>
+            </div>
+
+            <!-- Card 6: Sequência -->
+            <div class="p-4 rounded-xl border border-orange-200 bg-orange-50/40 hover:bg-orange-50/80 transition">
+              <div class="flex items-center justify-between text-orange-600 mb-2">
+                <span class="text-xs font-semibold text-orange-950">Constância</span>
+                <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <div class="text-2xl font-black text-orange-600 font-mono">4 dias</div>
+              <div class="text-[11px] font-bold text-orange-700 mt-1">Ritmo mantido</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Seção: Continue Estudando -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-extrabold text-petrol-900 flex items-center gap-2">
+              <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+              <span>Continue estudando</span>
+            </h3>
+            <span class="text-xs text-slate-400">Clique para retomar a sessão</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            
+            <!-- Card Retomada: Direito Tributário -->
+            <div class="bg-white rounded-xl border border-slate-200 p-5 hover:border-orange-500 hover:shadow-md transition cursor-pointer flex flex-col justify-between group resume-study-card" data-material-id="mat-trib-01">
+              <div>
+                <div class="flex items-center justify-between text-[11px] mb-2">
+                  <span class="font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">Direito Tributário</span>
+                  <span class="text-slate-400">ontem</span>
+                </div>
+                <h4 class="font-bold text-petrol-900 group-hover:text-orange-600 transition text-sm">Simulado de Fixação CTN</h4>
+                <p class="text-xs text-slate-500 mt-1">68 questões restantes no ciclo</p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-orange-600">
+                <span>Retomar questões</span>
+                <span class="group-hover:translate-x-1 transition-transform">→</span>
+              </div>
+            </div>
+
+            <!-- Card Retomada: Contabilidade Geral -->
+            <div class="bg-white rounded-xl border border-slate-200 p-5 hover:border-orange-500 hover:shadow-md transition cursor-pointer flex flex-col justify-between group resume-study-card" data-material-id="mat-cont-01">
+              <div>
+                <div class="flex items-center justify-between text-[11px] mb-2">
+                  <span class="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">Contabilidade</span>
+                  <span class="text-slate-400">hoje</span>
+                </div>
+                <h4 class="font-bold text-petrol-900 group-hover:text-orange-600 transition text-sm">Demonstrações &amp; Balanço</h4>
+                <p class="text-xs text-slate-500 mt-1">32 flashcards na fila</p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-orange-600">
+                <span>Praticar flashcards</span>
+                <span class="group-hover:translate-x-1 transition-transform">→</span>
+              </div>
+            </div>
+
+            <!-- Card Retomada: LC 214/25 -->
+            <div class="bg-white rounded-xl border border-slate-200 p-5 hover:border-orange-500 hover:shadow-md transition cursor-pointer flex flex-col justify-between group resume-study-card" data-material-id="mat-adm-01">
+              <div>
+                <div class="flex items-center justify-between text-[11px] mb-2">
+                  <span class="font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">LC 214/25</span>
+                  <span class="text-slate-400">revisar</span>
+                </div>
+                <h4 class="font-bold text-petrol-900 group-hover:text-orange-600 transition text-sm">Reforma Tributária e IBS/CBS</h4>
+                <p class="text-xs text-slate-500 mt-1">5 tópicos e lacunas ativas</p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-orange-600">
+                <span>Preencher lacunas</span>
+                <span class="group-hover:translate-x-1 transition-transform">→</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ============================================== -->
+      <!-- TELA 2: MODO DE ESTUDO ATIVO                   -->
+      <!-- ============================================== -->
+      <div id="viewStudy" class="space-y-4 hidden">
+        
+        <!-- Barra de Cabeçalho do Caderno Selecionado -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <button id="btnBackToDashboard" class="text-xs font-bold text-orange-600 hover:text-orange-700 flex items-center gap-1 transition">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                <span>Voltar à Visão Geral</span>
+              </button>
+              <span class="text-slate-300">•</span>
+              <span id="activeMaterialCategory" class="text-[11px] font-bold text-petrol-700 bg-petrol-50 px-2.5 py-0.5 rounded-full border border-petrol-200">Disciplina</span>
+            </div>
+            <h2 id="activeMaterialTitle" class="text-lg md:text-xl font-black text-petrol-900 tracking-tight">Título do Caderno</h2>
+          </div>
+
+          <!-- Abas Superiores do Material com Distinção de Modo -->
+          <div class="flex items-center gap-1.5 border border-slate-200 p-1.5 rounded-xl bg-slate-100 self-start sm:self-auto shadow-xs">
+            <button id="tabStudy" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white text-petrol-900 shadow-xs border border-slate-200/80 transition flex flex-col items-start gap-0.5">
+              <span class="text-[9px] uppercase tracking-wider text-orange-600 font-bold leading-tight">Modo Estudante</span>
+              <span class="flex items-center gap-1.5 leading-snug">
+                <svg class="w-3.5 h-3.5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>Prática Ativa</span>
+              </span>
+            </button>
+            <button id="tabEditor" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-500 hover:text-petrol-900 transition flex flex-col items-start gap-0.5">
+              <span class="text-[9px] uppercase tracking-wider text-slate-400 font-semibold leading-tight">Modo Avançado</span>
+              <span class="flex items-center gap-1.5 leading-snug">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                <span>Dados / JSON</span>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Container do Motor Ativo (Quiz, Flashcard ou Resumo) -->
+        <div id="studyEngineContainer" class="space-y-4">
+          <!-- Renderizado via JS -->
+        </div>
+
+        <!-- Container do Editor JSON (Oculto por padrão) -->
+        <div id="studyEditorContainer" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-4 hidden">
+          <!-- Banner de Aviso e Salvaguarda -->
+          <div class="flex items-start gap-2.5 p-3 rounded-xl bg-amber-50/80 border border-amber-200/90 text-amber-900 text-xs">
+            <svg class="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            <div class="leading-relaxed">
+              <strong class="font-bold text-amber-950">⚠️ Atenção:</strong> Edições manuais podem alterar a estrutura do material. Certifique-se de manter a sintaxe correta para não comprometer a execução das questões e cartões.
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">Estrutura de Dados do Caderno</span>
+            <div class="flex items-center gap-2">
+              <button id="btnFormatJson" class="text-xs px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 font-semibold transition">Auto-formatar</button>
+              <button id="btnSaveEditorChanges" class="text-xs px-3.5 py-1 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-bold transition">Salvar Alterações</button>
+            </div>
+          </div>
+          <textarea id="rawJsonEditor" rows="16" class="w-full p-4 font-mono text-xs bg-slate-900 text-emerald-400 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/40 selection:bg-petrol-700"></textarea>
+        </div>
+
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Modal: Adicionar Novo Material / Caderno -->
+  <div id="modalNewMaterial" class="fixed inset-0 bg-petrol-950/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-xl max-w-2xl w-full p-6 space-y-5 animate-in fade-in zoom-in-95 duration-150">
+      
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center font-bold">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          </div>
+          <h3 class="font-extrabold text-petrol-900 text-base">Novo Material de Estudo</h3>
+        </div>
+        <button id="btnCloseModal" class="text-slate-400 hover:text-slate-600 text-lg p-1">✕</button>
+      </div>
+
+      <!-- Botões de Templates Rápidos -->
+      <div class="space-y-1.5">
+        <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Modelos Rápidos (JSON):</label>
+        <div class="flex flex-wrap gap-2">
+          <button id="btnTplQuiz" class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold hover:border-orange-500 hover:text-orange-600 transition flex items-center gap-1.5 bg-slate-50">
+            <svg class="w-3.5 h-3.5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            <span>Template Simulado</span>
+          </button>
+          <button id="btnTplFlashcard" class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold hover:border-orange-500 hover:text-orange-600 transition flex items-center gap-1.5 bg-slate-50">
+            <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+            <span>Template Flashcards</span>
+          </button>
+          <button id="btnTplSummary" class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold hover:border-orange-500 hover:text-orange-600 transition flex items-center gap-1.5 bg-slate-50">
+            <svg class="w-3.5 h-3.5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253"/></svg>
+            <span>Template Resumo Ativo</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Editor de JSON do Material -->
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between">
+          <label for="inputMaterialJson" class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Código JSON do Material:</label>
+          <span id="labelJsonValidation" class="text-[11px] font-mono text-slate-400">Pronto para inserção</span>
+        </div>
+        <textarea id="inputMaterialJson" rows="10" placeholder="Cole o objeto JSON aqui..." class="w-full p-3 font-mono text-xs bg-slate-900 text-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/40"></textarea>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+        <button id="btnCancelModal" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">Cancelar</button>
+        <button id="btnSaveMaterial" class="px-5 py-2 rounded-xl text-xs font-bold text-white bg-orange-500 hover:bg-orange-600 transition shadow-sm">Adicionar à Biblioteca</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast de Notificação -->
+  <div id="appToast" class="fixed bottom-5 right-5 bg-petrol-900 text-white border border-petrol-700 px-4 py-2.5 rounded-xl shadow-lg text-xs font-medium flex items-center gap-2 transform translate-y-16 opacity-0 transition duration-200 z-50 pointer-events-none">
+    <svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    <span id="toastMsg">Notificação do sistema</span>
+  </div>
+
+  <script>
+    // Templates de Inserção Rápida
+    const DEFAULT_TEMPLATES = {
+      quiz: {
+        title: "Direito Administrativo - Princípios Constitucionais (LIMPE)",
+        category: "Direito",
+        type: "quiz",
+        tags: ["cf88", "limpe", "concursos"],
+        reviewFlags: { today: true, difficulty: false, pending: false },
+        questions: [
+          {
+            id: 1,
+            topic: "Princípio da Impessoalidade",
+            question: "A vedação à promoção pessoal de autoridades em publicidades institucionais de atos, programas e campanhas de órgãos públicos (art. 37, § 1º da CF/88) decorre diretamente do princípio da:",
+            options: [
+              { text: "Publicidade estrita", isCorrect: false, rationale: "A publicidade exige a transparência dos atos, mas a proibição de autopromoção visa à impessoalidade." },
+              { text: "Impessoalidade", isCorrect: true, rationale: "Art. 37, § 1º da CF/88: A publicidade dos atos deve ter caráter educativo, informativo ou de orientação social, dela não podendo constar nomes, símbolos ou imagens que caracterizem promoção pessoal." },
+              { text: "Eficiência financeira", isCorrect: false, rationale: "A eficiência foca na produtividade e economicidade, não na vedação de nomes próprios." },
+              { text: "Moralidade punitiva", isCorrect: false, rationale: "Embora haja nexo com a ética, o enquadramento constitucional primário é o princípio da impessoalidade." }
+            ]
+          },
+          {
+            id: 2,
+            topic: "Princípio da Legalidade",
+            question: "Diferentemente do particular, que pode fazer tudo o que a lei não proíbe, a Administração Pública rege-se pelo princípio da legalidade estrita, o que significa que:",
+            options: [
+              { text: "Só pode agir mediante expressa autorização ou imposição legal", isCorrect: true, rationale: "Na Administração Pública, a legalidade opera de forma vinculada e positiva: só é lícito fazer o que a lei prescreve ou autoriza." },
+              { text: "Pode editar regulamentos autônomos sem qualquer base normativa", isCorrect: false, rationale: "Atos normativos infralegais não podem inovar na ordem jurídica sem substrato de lei formal." },
+              { text: "Fica dispensada de motivação em atos discricionários", isCorrect: false, rationale: "A motivação é obrigatória na grande maioria dos atos públicos para verificação da legalidade." },
+              { text: "Possui soberania absoluta e irrestrita perante o Poder Judiciário", isCorrect: false, rationale: "O Judiciário pode controlar a legalidade de qualquer ato administrativo (inafastabilidade da tutela)." }
+            ]
+          }
+        ]
+      },
+      flashcard: {
+        title: "Contabilidade Geral - Balanço Patrimonial e CPCs",
+        category: "Contabilidade",
+        type: "flashcard",
+        tags: ["balanco", "cpc00", "concursos"],
+        reviewFlags: { today: true, difficulty: true, pending: false },
+        cards: [
+          {
+            id: 1,
+            front: "Qual é a definição contábil de Ativo segundo o CPC 00 (Estrutura Conceitual)?",
+            back: "Ativo é um recurso econômico presente controlado pela entidade como resultado de eventos passados, com potencial de produzir benefícios econômicos futuros."
+          },
+          {
+            id: 2,
+            front: "O que caracteriza uma Conta Retificadora no Patrimônio Líquido?",
+            back: "Uma conta redutora de saldo credor natural (ex: Ações em Tesouraria ou Capital a Integralizar), que possui natureza devedora e diminui o valor global do PL."
+          }
+        ]
+      },
+      summary: {
+        title: "Reforma Tributária - LC 214/25 e Princípio do Destino",
+        category: "Direito",
+        type: "summary",
+        tags: ["tributario", "ibs", "cbs", "reforma"],
+        reviewFlags: { today: false, difficulty: false, pending: true },
+        sections: [
+          {
+            title: "Tributação no Destino e Não Cumulatividade Plena",
+            content: "Com a Emenda Constitucional da Reforma Tributária e a Lei Complementar 214/25, o IBS e a CBS passam a adotar integralmente o princípio da [[destino]], extinguindo a chamada guerra fiscal interestadual e garantindo a [[não-cumulatividade plena]] no regime de créditos financeiros."
+          },
+          {
+            title: "Comitê Gestor do IBS",
+            content: "A administração do Imposto sobre Bens e Serviços compete exclusivamente ao [[Comitê Gestor do IBS]], entidade pública sob regime especial com representação paritária entre [[Estados e Municípios]]."
+          }
+        ]
+      }
+    };
+
+    // Materiais Padrão em Memória
+    let studyMaterials = [
+      {
+        id: "mat-trib-01",
+        title: "Direito Tributário - Simulado de Fixação CTN",
+        category: "Direito",
+        type: "quiz",
+        tags: ["ctn", "cf88", "concursos"],
+        reviewFlags: { today: true, difficulty: false, pending: false },
+        questions: [
+          {
+            id: 1,
+            topic: "Espécies Tributárias (CTN art. 16)",
+            question: "O tributo cuja obrigação tem por fato gerador uma situação independente de qualquer atividade estatal específica relativa ao contribuinte é o:",
+            options: [
+              { text: "Taxa de fiscalização ou serviço público", isCorrect: false, rationale: "Taxas exigem efetivo exercício de poder de polícia ou utilização de serviço público específico e divisível (Art. 77 do CTN)." },
+              { text: "Imposto", isCorrect: true, rationale: "Art. 16 do CTN: 'Imposto é o tributo cuja obrigação tem por fato gerador uma situação independente de qualquer atividade estatal específica, relativa ao contribuinte'." },
+              { text: "Contribuição de melhoria", isCorrect: false, rationale: "Contribuição de melhoria decorre de obra pública que gere valorização imobiliária direta (Art. 81 do CTN)." },
+              { text: "Empréstimo compulsório", isCorrect: false, rationale: "Empréstimos compulsórios são vinculados a despesas extraordinárias ou investimento público urgente (Art. 148 da CF/88)." }
+            ]
+          },
+          {
+            id: 2,
+            topic: "Legalidade e Imunidades (CF art. 150)",
+            question: "A concessão de anistia e isenção tributária depende, segundo a CF/88 e o CTN, de:",
+            options: [
+              { text: "Lei específica federal, estadual ou municipal", isCorrect: true, rationale: "Art. 150, § 6º da CF/88 e Art. 97 do CTN determinam que isenções e anistias somente podem ser concedidas mediante lei específica que regule a matéria." },
+              { text: "Decreto autônomo do Chefe do Poder Executivo", isCorrect: false, rationale: "O princípio da estrita legalidade tributária impede que anistia ou isenção sejam concedidas por mero decreto." },
+              { text: "Portaria expedida pelo órgão fazendário arrecadador", isCorrect: false, rationale: "Portarias são atos normativos infralegais que não possuem competência para dispensar pagamento de tributo." },
+              { text: "Decisão administrativa irrecorrível de fiscal", isCorrect: false, rationale: "Decisões administrativas apenas reconhecem ou aplicam a legislação prévia, não podendo inovar concedendo isenções." }
+            ]
+          },
+          {
+            id: 3,
+            topic: "Crédito Tributário e Lançamento",
+            question: "O lançamento tributário por homologação opera-se quando:",
+            options: [
+              { text: "A autoridade fazendária arbitra o imposto sem cooperação do contribuinte", isCorrect: false, rationale: "Este é o lançamento de ofício (ou direto)." },
+              { text: "O sujeito passivo antecipa o pagamento do tributo antes de qualquer exame prévio da autoridade", isCorrect: true, rationale: "Art. 150 do CTN: O lançamento por homologação ocorre quando a legislação atribui ao sujeito passivo o dever de antecipar o pagamento sem prévio exame da autoridade." },
+              { text: "Ambas as partes celebram termo de ajuste amigável", isCorrect: false, rationale: "Lançamento é ato vinculado da autoridade ou homologação legal de dever antecipado, não transação facultativa." },
+              { text: "Ocorre a prescrição intercorrente da dívida ativa", isCorrect: false, rationale: "Prescrição é causa extintiva do crédito, não modalidade de constituição de lançamento." }
+            ]
+          }
+        ]
+      },
+      {
+        id: "mat-cont-01",
+        title: "Contabilidade Geral - Demonstrações & Balanço",
+        category: "Contabilidade",
+        type: "flashcard",
+        tags: ["cpc26", "dre", "balanco"],
+        reviewFlags: { today: true, difficulty: true, pending: false },
+        cards: [
+          {
+            id: 1,
+            front: "Segundo o CPC 26, qual é a fórmula do Capital de Giro Líquido (Ativo Circulante Líquido)?",
+            back: "Capital de Giro Líquido (CGL) = Ativo Circulante (AC) - Passivo Circulante (PC)."
+          },
+          {
+            id: 2,
+            front: "Qual demonstração evidencia as alterações ocorridas no saldo da conta Caixa e Equivalentes de Caixa durante o exercício?",
+            back: "Demonstração dos Fluxos de Caixa (DFC), subdividida em Atividades Operacionais, de Investimento e de Financiamento."
+          }
+        ]
+      },
+      {
+        id: "mat-adm-01",
+        title: "LC 214/25 - Reforma Tributária e CBS/IBS",
+        category: "Direito",
+        type: "summary",
+        tags: ["reforma", "lc214", "tributario"],
+        reviewFlags: { today: false, difficulty: false, pending: true },
+        sections: [
+          {
+            title: "Marco Regulatório do IBS e CBS",
+            content: "A Lei Complementar 214/25 institui a sistemática do Imposto sobre Bens e Serviços (IBS) e da Contribuição sobre Bens e Serviços (CBS). Ambos incidem sobre operações com [[bens materiais e imateriais]], inclusive direitos, adotando o regime de [[crédito financeiro amplo]]."
+          },
+          {
+            title: "Local da Operação e Destino",
+            content: "Para fins de fixação da competência do IBS, considera-se ocorrido o fato gerador no [[local do consumo]] final do bem ou serviço, eliminando incentivos fiscais predatórios."
+          }
+        ]
+      }
+    ];
+
+    // Estado da Aplicação
+    let currentScreen = "dashboard"; // "dashboard" ou "study"
+    let activeMaterialId = "mat-trib-01";
+    let activeStudyTab = "practice"; // "practice" ou "editor"
+    let currentFilterScope = "all";
+    let currentSearchTerm = "";
+
+    // Estado do Motor de Simulado
+    let quizCurrentIndex = 0;
+    let quizPendingSelection = null;       // Alternativa selecionada com 1 clique aguardando envio
+    let quizEliminatedOptions = {};         // { questionId: [índices eliminados com 2 cliques] }
+    let quizSelectedAnswers = {};          // { questionId: índiceSubmetido }
+    let quizFilterWrongOnly = false;        // Modo de revisão somente dos erros
+    let quizIsFinished = false;             // Exibe relatório final do simulado
+
+    // Estado do Motor de Flashcards
+    let flashcardCurrentIndex = 0;
+    let flashcardIsFlipped = false;
+    let flashcardRatings = {};             // { [cardId]: 'wrong' | 'good' | 'easy' }
+    let flashcardFilterWrongOnly = false;   // Modo de prática apenas nos cards errados
+    let flashcardIsFinished = false;        // Exibe tela de conclusão dos flashcards
+
+    // Métricas Hoje
+    let studyStats = {
+      answered: 42,
+      correct: 31,
+      wrong: 11,
+      flashcards: 27
+    };
+
+    function getActiveMaterial() {
+      return studyMaterials.find(m => m.id === activeMaterialId) || studyMaterials[0];
+    }
+
+    function updateBadgeCounters() {
+      const totalAll = studyMaterials.length;
+      const totalQuiz = studyMaterials.filter(m => m.type === "quiz").length;
+      const totalFlash = studyMaterials.filter(m => m.type === "flashcard").length;
+      const totalSummary = studyMaterials.filter(m => m.type === "summary").length;
+
+      const catDireito = studyMaterials.filter(m => m.category === "Direito").length;
+      const catContab = studyMaterials.filter(m => m.category === "Contabilidade").length;
+      const catTI = studyMaterials.filter(m => m.category === "TI").length;
+      const catAdm = studyMaterials.filter(m => m.category === "Administracao").length;
+
+      const revToday = studyMaterials.filter(m => m.reviewFlags?.today).length;
+      const revDiff = studyMaterials.filter(m => m.reviewFlags?.difficulty).length;
+      const revPend = studyMaterials.filter(m => m.reviewFlags?.pending).length;
+
+      document.getElementById("badgeTotalAll").innerText = totalAll;
+      document.getElementById("badgeTotalQuiz").innerText = totalQuiz;
+      document.getElementById("badgeTotalFlashcard").innerText = totalFlash;
+      document.getElementById("badgeTotalSummary").innerText = totalSummary;
+
+      document.getElementById("badgeCatDireito").innerText = catDireito;
+      document.getElementById("badgeCatContabilidade").innerText = catContab;
+      document.getElementById("badgeCatTI").innerText = catTI;
+      document.getElementById("badgeCatAdministracao").innerText = catAdm;
+
+      document.getElementById("badgeRevToday").innerText = revToday;
+      document.getElementById("badgeRevDifficulty").innerText = revDiff;
+      document.getElementById("badgeRevPending").innerText = revPend;
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById("appToast");
+      const msg = document.getElementById("toastMsg");
+      msg.innerText = text;
+      toast.classList.remove("translate-y-16", "opacity-0");
+      setTimeout(() => {
+        toast.classList.add("translate-y-16", "opacity-0");
+      }, 2500);
+    }
+
+    function renderMaterialsList() {
+      const container = document.getElementById("materialsList");
+      
+      const filtered = studyMaterials.filter(item => {
+        // Filtro por escopo selecionado no dropdown ou acordions
+        let passScope = true;
+        if (currentFilterScope === "type-quiz") passScope = item.type === "quiz";
+        else if (currentFilterScope === "type-flashcard") passScope = item.type === "flashcard";
+        else if (currentFilterScope === "type-summary") passScope = item.type === "summary";
+        else if (currentFilterScope === "cat-Direito") passScope = item.category === "Direito";
+        else if (currentFilterScope === "cat-Contabilidade") passScope = item.category === "Contabilidade";
+        else if (currentFilterScope === "cat-TI") passScope = item.category === "TI";
+        else if (currentFilterScope === "cat-Administracao") passScope = item.category === "Administracao";
+        else if (currentFilterScope === "rev-today") passScope = !!item.reviewFlags?.today;
+        else if (currentFilterScope === "rev-difficulty") passScope = !!item.reviewFlags?.difficulty;
+        else if (currentFilterScope === "rev-pending") passScope = !!item.reviewFlags?.pending;
+
+        // Filtro por termo de busca
+        let passSearch = true;
+        if (currentSearchTerm.trim() !== "") {
+          const term = currentSearchTerm.toLowerCase();
+          const matchTitle = item.title.toLowerCase().includes(term);
+          const matchCat = (item.category || "").toLowerCase().includes(term);
+          const matchTags = (item.tags || []).some(t => t.toLowerCase().includes(term));
+          passSearch = matchTitle || matchCat || matchTags;
+        }
+
+        return passScope && passSearch;
+      });
+
+      document.getElementById("labelFilteredCount").innerText = `${filtered.length} materiais`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-6 px-3 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+            <svg class="w-6 h-6 text-slate-300 mx-auto mb-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <p class="text-xs text-slate-500 font-medium">Nenhum caderno localizado com este critério.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(mat => {
+        const isSelected = mat.id === activeMaterialId && currentScreen === "study";
+        
+        let typeBadgeColor = "text-orange-600 bg-orange-50 border-orange-200";
+        let typeLabel = "Simulado";
+        if (mat.type === "flashcard") {
+          typeBadgeColor = "text-blue-600 bg-blue-50 border-blue-200";
+          typeLabel = "Flashcard";
+        } else if (mat.type === "summary") {
+          typeBadgeColor = "text-emerald-600 bg-emerald-50 border-emerald-200";
+          typeLabel = "Resumo";
+        }
+
+        return `
+          <div data-id="${mat.id}" class="material-list-item p-3 rounded-xl border transition cursor-pointer flex flex-col gap-1.5 ${isSelected ? 'border-orange-500 bg-orange-50/50 shadow-xs ring-1 ring-orange-400/30' : 'border-slate-200 hover:border-slate-300 bg-white'}">
+            <div class="flex items-center justify-between gap-1 text-[10px]">
+              <span class="font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${typeBadgeColor}">${typeLabel}</span>
+              <span class="text-slate-400 font-medium">${mat.category || "Geral"}</span>
+            </div>
+            <h4 class="font-bold text-xs text-petrol-900 line-clamp-2 leading-snug">${mat.title}</h4>
+            <div class="flex items-center gap-1 mt-0.5">
+              ${(mat.tags || []).slice(0, 3).map(tag => `
+                <span class="text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded font-mono">#${tag}</span>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.querySelectorAll(".material-list-item").forEach(item => {
+        item.addEventListener("click", () => {
+          const id = item.getAttribute("data-id");
+          openMaterialStudy(id);
+          // Fecha a gaveta lateral automaticamente em telas mobile e tablet
+          closeMobileDrawer();
+        });
+      });
+    }
+
+    function showDashboard() {
+      currentScreen = "dashboard";
+      document.getElementById("viewDashboard").classList.remove("hidden");
+      document.getElementById("viewStudy").classList.add("hidden");
+      renderMaterialsList();
+      closeMobileDrawer();
+    }
+
+    function openMaterialStudy(id) {
+      activeMaterialId = id;
+      currentScreen = "study";
+      activeStudyTab = "practice";
+      
+      // Reseta estado interno do simulado ao abrir novo material
+      quizCurrentIndex = 0;
+      quizPendingSelection = null;
+      quizEliminatedOptions = {};
+      quizSelectedAnswers = {};
+      quizFilterWrongOnly = false;
+      quizIsFinished = false;
+
+      // Reseta flashcard
+      flashcardCurrentIndex = 0;
+      flashcardIsFlipped = false;
+      flashcardRatings = {};
+      flashcardFilterWrongOnly = false;
+      flashcardIsFinished = false;
+
+      document.getElementById("viewDashboard").classList.add("hidden");
+      document.getElementById("viewStudy").classList.remove("hidden");
+
+      const mat = getActiveMaterial();
+      document.getElementById("activeMaterialTitle").innerText = mat.title;
+      document.getElementById("activeMaterialCategory").innerText = `${mat.category || 'Geral'} • ${mat.type.toUpperCase()}`;
+      document.getElementById("rawJsonEditor").value = JSON.stringify(mat, null, 2);
+
+      renderStudyTabs();
+      renderMaterialsList();
+    }
+
+    function renderStudyTabs() {
+      const tabStudy = document.getElementById("tabStudy");
+      const tabEditor = document.getElementById("tabEditor");
+      const engineBox = document.getElementById("studyEngineContainer");
+      const editorBox = document.getElementById("studyEditorContainer");
+
+      if (activeStudyTab === "practice") {
+        tabStudy.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white text-petrol-900 shadow-xs border border-slate-200/80 transition flex flex-col items-start gap-0.5";
+        tabEditor.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-500 hover:text-petrol-900 transition flex flex-col items-start gap-0.5";
+        engineBox.classList.remove("hidden");
+        editorBox.classList.add("hidden");
+        renderCurrentEngine();
+      } else {
+        tabEditor.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white text-petrol-900 shadow-xs border border-slate-200/80 transition flex flex-col items-start gap-0.5";
+        tabStudy.className = "px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-500 hover:text-petrol-900 transition flex flex-col items-start gap-0.5";
+        engineBox.classList.add("hidden");
+        editorBox.classList.remove("hidden");
+      }
+    }
+
+    function renderCurrentEngine() {
+      const mat = getActiveMaterial();
+      const container = document.getElementById("studyEngineContainer");
+
+      if (mat.type === "quiz") {
+        renderQuizEngine(mat, container);
+      } else if (mat.type === "flashcard") {
+        renderFlashcardEngine(mat, container);
+      } else if (mat.type === "summary") {
+        renderSummaryEngine(mat, container);
+      } else {
+        container.innerHTML = `<div class="p-6 bg-white rounded-xl text-center text-xs text-slate-500">Tipo de caderno desconhecido.</div>`;
+      }
+    }
+
+    function renderQuizEngine(mat, container) {
+      let allQuestions = mat.questions || [];
+      if (allQuestions.length === 0) {
+        container.innerHTML = `<div class="p-8 bg-white rounded-2xl text-center text-xs text-slate-400">Nenhuma questão cadastrada neste simulado.</div>`;
+        return;
+      }
+
+      // Se estiver revisando apenas as erradas
+      let activeQuestions = allQuestions;
+      if (quizFilterWrongOnly) {
+        activeQuestions = allQuestions.filter(q => {
+          const ans = quizSelectedAnswers[q.id];
+          return ans !== undefined && !q.options[ans]?.isCorrect;
+        });
+        if (activeQuestions.length === 0) {
+          quizFilterWrongOnly = false;
+          activeQuestions = allQuestions;
+        }
+      }
+
+      // Se simulado foi concluído, renderiza relatório diagnóstico
+      if (quizIsFinished) {
+        renderQuizDiagnosticReport(mat, container, allQuestions);
+        return;
+      }
+
+      if (quizCurrentIndex >= activeQuestions.length) {
+        quizCurrentIndex = Math.max(0, activeQuestions.length - 1);
+      }
+
+      const q = activeQuestions[quizCurrentIndex];
+      const submittedOption = quizSelectedAnswers[q.id];
+      const hasResolved = submittedOption !== undefined;
+      const eliminated = quizEliminatedOptions[q.id] || [];
+      const currentSelected = hasResolved ? submittedOption : quizPendingSelection;
+      const isLast = quizCurrentIndex === activeQuestions.length - 1;
+
+      container.innerHTML = `
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8 space-y-6">
+          
+          <!-- Topo da Questão: Progresso e Ações -->
+          <div class="flex items-center justify-between text-xs text-slate-500 font-medium">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+              <span class="font-bold text-petrol-900">Questão ${quizCurrentIndex + 1} de ${activeQuestions.length}</span>
+              ${quizFilterWrongOnly ? `
+                <span class="bg-rose-100 text-rose-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-rose-300 flex items-center gap-1">
+                  <span>Modo: Refazer Erros</span>
+                  <button id="btnExitWrongOnly" class="ml-1 text-rose-600 hover:text-rose-900 font-black">✕</button>
+                </span>` : ''}
+              ${q.topic ? `<span class="hidden md:inline bg-slate-100 text-slate-700 text-[11px] px-2 py-0.5 rounded-md font-mono border border-slate-200">${q.topic}</span>` : ''}
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button id="btnFinishEarly" class="text-xs font-semibold text-slate-600 hover:text-petrol-900 hover:bg-slate-100 px-2.5 py-1 rounded-lg transition border border-slate-200">
+                Finalizar e Ver Resultado
+              </button>
+              <span class="font-mono text-orange-600 font-bold bg-orange-50 px-2.5 py-1 rounded-md border border-orange-200">
+                ${Math.round(((quizCurrentIndex + 1) / activeQuestions.length) * 100)}%
+              </span>
+            </div>
+          </div>
+
+          <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+            <div class="bg-gradient-to-r from-orange-500 to-amber-500 h-2 transition-all duration-300 rounded-full" style="width: ${((quizCurrentIndex + 1) / activeQuestions.length) * 100}%"></div>
+          </div>
+
+          <!-- Dica Didática de Interação Ativa -->
+          <div class="flex items-center justify-between text-[11px] text-slate-500 bg-slate-50/80 px-3.5 py-2 rounded-xl border border-slate-200/70">
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-petrol-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span><strong>1 clique:</strong> selecionar • <strong>2 cliques:</strong> eliminar assertiva • Tecla <kbd class="px-1.5 py-0.5 bg-white border border-slate-300 rounded text-[10px] font-mono text-slate-700">Enter</kbd> para resolver</span>
+            </span>
+            ${hasResolved ? `<span class="text-emerald-700 font-bold">Respondida</span>` : `<span class="text-orange-600 font-medium">Aguardando confirmação</span>`}
+          </div>
+
+          <!-- Enunciado -->
+          <div>
+            <h3 class="text-base md:text-lg font-bold text-petrol-900 leading-relaxed">${q.question}</h3>
+          </div>
+
+          <!-- Lista de Alternativas com Interação -->
+          <div class="space-y-3" id="quizOptionsBox">
+            ${q.options.map((opt, idx) => {
+              const isElim = eliminated.includes(idx);
+              const isSel = currentSelected === idx;
+
+              let style = "border-slate-200 bg-white hover:border-slate-300 text-slate-800";
+              let badge = `<span class="w-6 h-6 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-center font-mono text-xs font-semibold text-slate-700">${String.fromCharCode(65 + idx)}</span>`;
+              let tag = "";
+
+              if (hasResolved) {
+                if (opt.isCorrect) {
+                  style = "border-emerald-500 bg-emerald-50/80 text-emerald-950 font-medium ring-1 ring-emerald-400";
+                  badge = `<span class="w-6 h-6 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">✓</span>`;
+                } else if (submittedOption === idx) {
+                  style = "border-rose-400 bg-rose-50 text-rose-950 font-medium";
+                  badge = `<span class="w-6 h-6 rounded-lg bg-rose-600 text-white flex items-center justify-center font-bold text-xs">✕</span>`;
+                } else {
+                  style = "opacity-40 border-slate-200 bg-slate-50 text-slate-400";
+                }
+              } else {
+                if (isSel) {
+                  style = "border-orange-500 bg-orange-50/60 ring-2 ring-orange-400/40 text-petrol-950 font-semibold shadow-xs";
+                  badge = `<span class="w-6 h-6 rounded-lg bg-orange-500 text-white flex items-center justify-center font-bold text-xs font-mono">✓</span>`;
+                } else if (isElim) {
+                  style = "opacity-40 border-dashed border-slate-300 bg-slate-100 text-slate-400 line-through-dimmed";
+                  badge = `<span class="w-6 h-6 rounded-lg border border-slate-300 bg-slate-200 flex items-center justify-center font-mono text-xs text-slate-400">✕</span>`;
+                  tag = `<span class="ml-auto text-[10px] text-rose-500 font-mono tracking-wider uppercase font-semibold">Eliminada</span>`;
+                }
+              }
+
+              return `
+                <div data-opt="${idx}" class="quiz-option-card p-3.5 md:p-4 rounded-xl border ${style} transition cursor-pointer flex items-start gap-3 select-none">
+                  <div class="flex-shrink-0 mt-0.5">${badge}</div>
+                  <div class="flex-1 text-xs md:text-sm leading-relaxed ${isElim && !hasResolved ? 'line-through' : ''}">${opt.text}</div>
+                  ${tag}
+                </div>
+              `;
+            }).join('')}
+          </div>
+
+          <!-- Rationale / Justificativa Pedagógica Comentada -->
+          ${hasResolved ? `
+            <div class="p-4 rounded-xl border ${q.options[submittedOption]?.isCorrect ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : 'bg-amber-50 border-amber-200 text-amber-950'} space-y-2">
+              <div class="flex items-center gap-1.5 font-bold text-xs ${q.options[submittedOption]?.isCorrect ? 'text-emerald-800' : 'text-amber-800'}">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>Gabarito Comentado Oficial</span>
+              </div>
+              <p class="text-xs leading-relaxed font-normal">${q.options[submittedOption]?.rationale || "Gabarito validado com as normas e súmulas de referência."}</p>
+            </div>
+          ` : ''}
+
+          <!-- Botões Inferiores de Ação e Navegação -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+            <button id="btnPrevQ" ${quizCurrentIndex === 0 ? 'disabled' : ''} class="px-4 py-2 rounded-xl text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center justify-center gap-1.5">
+              <span>← Anterior</span>
+            </button>
+
+            <!-- Botão Central: Resolver Questão -->
+            <div class="flex items-center justify-center">
+              ${!hasResolved ? `
+                <button id="btnSubmitActiveQuestion" ${quizPendingSelection === null ? 'disabled' : ''} class="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-orange-500 hover:bg-orange-600 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm transition flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  <span>Resolver Questão (Enter)</span>
+                </button>
+              ` : `
+                <span class="text-xs text-emerald-700 font-bold bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  Resposta Computada
+                </span>
+              `}
+            </div>
+
+            <!-- Botão de Avanço -->
+            ${isLast ? `
+              <button id="btnFinishQuiz" class="px-5 py-2 rounded-xl text-xs font-bold bg-petrol-900 text-white hover:bg-petrol-800 shadow-sm transition flex items-center justify-center gap-1.5">
+                <span>Finalizar Simulado</span>
+                <svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </button>
+            ` : `
+              <button id="btnNextQ" class="px-4 py-2 rounded-xl text-xs font-bold bg-petrol-900 text-white hover:bg-petrol-800 shadow-sm transition flex items-center justify-center gap-1">
+                <span>Próxima →</span>
+              </button>
+            `}
+          </div>
+
+        </div>
+      `;
+
+      // Eventos de 1 Clique e 2 Cliques (DblClick) nas alternativas
+      if (!hasResolved) {
+        document.querySelectorAll(".quiz-option-card").forEach(card => {
+          let timer = null;
+          card.addEventListener("click", () => {
+            const idx = parseInt(card.getAttribute("data-opt"), 10);
+            if (timer) clearTimeout(timer);
+            timer = setTimeout(() => {
+              // 1 clique: seleciona
+              const elim = quizEliminatedOptions[q.id] || [];
+              if (elim.includes(idx)) {
+                quizEliminatedOptions[q.id] = elim.filter(i => i !== idx);
+              }
+              quizPendingSelection = idx;
+              renderQuizEngine(mat, container);
+            }, 200);
+          });
+
+          card.addEventListener("dblclick", (e) => {
+            e.preventDefault();
+            if (timer) clearTimeout(timer);
+            const idx = parseInt(card.getAttribute("data-opt"), 10);
+            if (!quizEliminatedOptions[q.id]) quizEliminatedOptions[q.id] = [];
+            const list = quizEliminatedOptions[q.id];
+            if (list.includes(idx)) {
+              quizEliminatedOptions[q.id] = list.filter(i => i !== idx);
+            } else {
+              quizEliminatedOptions[q.id].push(idx);
+              if (quizPendingSelection === idx) quizPendingSelection = null;
+            }
+            renderQuizEngine(mat, container);
+          });
+        });
+      }
+
+      // Submissão da questão
+      const submitAnswer = () => {
+        if (quizPendingSelection === null || hasResolved) return;
+        const chosen = quizPendingSelection;
+        quizSelectedAnswers[q.id] = chosen;
+        quizPendingSelection = null;
+
+        studyStats.answered++;
+        if (q.options[chosen]?.isCorrect) {
+          studyStats.correct++;
+        } else {
+          studyStats.wrong++;
+        }
+        document.getElementById("statAnswered").innerText = studyStats.answered;
+        document.getElementById("statCorrect").innerText = studyStats.correct;
+        document.getElementById("statWrong").innerText = studyStats.wrong;
+        document.getElementById("statAccuracy").innerText = `${Math.round((studyStats.correct / studyStats.answered) * 100)}% de aproveitamento`;
+
+        renderQuizEngine(mat, container);
+      };
+
+      document.getElementById("btnSubmitActiveQuestion")?.addEventListener("click", submitAnswer);
+
+      document.getElementById("btnPrevQ")?.addEventListener("click", () => {
+        if (quizCurrentIndex > 0) {
+          quizCurrentIndex--;
+          quizPendingSelection = null;
+          renderQuizEngine(mat, container);
+        }
+      });
+
+      document.getElementById("btnNextQ")?.addEventListener("click", () => {
+        if (quizCurrentIndex < activeQuestions.length - 1) {
+          quizCurrentIndex++;
+          quizPendingSelection = null;
+          renderQuizEngine(mat, container);
+        }
+      });
+
+      document.getElementById("btnFinishQuiz")?.addEventListener("click", () => {
+        quizIsFinished = true;
+        renderQuizEngine(mat, container);
+      });
+
+      document.getElementById("btnFinishEarly")?.addEventListener("click", () => {
+        quizIsFinished = true;
+        renderQuizEngine(mat, container);
+      });
+
+      document.getElementById("btnExitWrongOnly")?.addEventListener("click", () => {
+        quizFilterWrongOnly = false;
+        quizCurrentIndex = 0;
+        quizPendingSelection = null;
+        renderQuizEngine(mat, container);
+        showToast("Exibindo todas as questões do simulado.");
+      });
+    }
+
+    function renderQuizDiagnosticReport(mat, container, allQuestions) {
+      let correct = 0;
+      let wrong = 0;
+      const wrongByTopic = {};
+
+      allQuestions.forEach(q => {
+        const ans = quizSelectedAnswers[q.id];
+        if (ans !== undefined) {
+          if (q.options[ans]?.isCorrect) {
+            correct++;
+          } else {
+            wrong++;
+            const topic = q.topic || "Geral";
+            wrongByTopic[topic] = (wrongByTopic[topic] || 0) + 1;
+          }
+        }
+      });
+
+      const unans = allQuestions.length - (correct + wrong);
+      const totalAnswered = correct + wrong;
+      const pct = totalAnswered > 0 ? Math.round((correct / totalAnswered) * 100) : 0;
+
+      container.innerHTML = `
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-orange-600 bg-orange-50 px-2.5 py-0.5 rounded-full border border-orange-200">Relatório de Desempenho</span>
+              <h3 class="text-xl md:text-2xl font-black text-petrol-900 mt-1">Resultado do Simulado</h3>
+              <p class="text-xs text-slate-500">${mat.title}</p>
+            </div>
+            <div class="text-right">
+              <span class="text-3xl font-black ${pct >= 70 ? 'text-emerald-600' : 'text-orange-600'} font-mono">${pct}%</span>
+              <div class="text-[11px] text-slate-400 font-medium">de aproveitamento</div>
+            </div>
+          </div>
+
+          <!-- Quadro Quantitativo -->
+          <div class="grid grid-cols-3 gap-3">
+            <div class="p-3 rounded-xl border border-emerald-200 bg-emerald-50/50 text-center">
+              <div class="text-[11px] font-bold text-emerald-800">✅ Acertos</div>
+              <div class="text-xl font-black text-emerald-700 font-mono mt-0.5">${correct}</div>
+            </div>
+            <div class="p-3 rounded-xl border border-rose-200 bg-rose-50/50 text-center">
+              <div class="text-[11px] font-bold text-rose-800">❌ Erros</div>
+              <div class="text-xl font-black text-rose-700 font-mono mt-0.5">${wrong}</div>
+            </div>
+            <div class="p-3 rounded-xl border border-slate-200 bg-slate-50 text-center">
+              <div class="text-[11px] font-bold text-slate-600">⭕ Em branco</div>
+              <div class="text-xl font-black text-slate-700 font-mono mt-0.5">${unans}</div>
+            </div>
+          </div>
+
+          <!-- Onde você errou -->
+          ${wrong > 0 ? `
+            <div class="space-y-3">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-rose-800 flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                <span>📌 Onde você errou (Pontos de Atenção)</span>
+              </h4>
+              <div class="space-y-2">
+                ${Object.entries(wrongByTopic).map(([topic, count]) => `
+                  <div class="p-3 rounded-xl border border-rose-100 bg-rose-50/30 flex items-center justify-between text-xs">
+                    <span class="font-semibold text-petrol-900">${topic}</span>
+                    <span class="font-mono font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded-md">${count} erro(s)</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          ` : `
+            <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50 text-xs font-semibold text-emerald-800 flex items-center gap-2">
+              <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Excelente! Você acertou todas as questões respondidas neste simulado.
+            </div>
+          `}
+
+          <!-- Ações Pedagógicas Finais -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-slate-100">
+            <button id="btnRestartAll" class="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-700 hover:bg-slate-50 transition flex items-center justify-center gap-2">
+              <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              <span>Refazer Simulado Completo</span>
+            </button>
+
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              ${wrong > 0 ? `
+                <button id="btnReviewErrorsOnly" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold shadow-sm transition flex items-center justify-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                  <span>Refazer apenas as questões erradas (${wrong})</span>
+                </button>
+              ` : `
+                <button id="btnReturnDash" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-petrol-900 hover:bg-petrol-800 text-white text-xs font-bold shadow-sm transition">
+                  Voltar à Visão Geral
+                </button>
+              `}
+            </div>
+          </div>
+
+        </div>
+      `;
+
+      document.getElementById("btnRestartAll")?.addEventListener("click", () => {
+        quizCurrentIndex = 0;
+        quizPendingSelection = null;
+        quizEliminatedOptions = {};
+        quizSelectedAnswers = {};
+        quizFilterWrongOnly = false;
+        quizIsFinished = false;
+        renderQuizEngine(mat, container);
+        showToast("Simulado reiniciado!");
+      });
+
+      document.getElementById("btnReviewErrorsOnly")?.addEventListener("click", () => {
+        // Encontra as questões que foram respondidas incorretamente
+        const wrongQuestions = allQuestions.filter(q => {
+          const ans = quizSelectedAnswers[q.id];
+          return ans !== undefined && !q.options[ans]?.isCorrect;
+        });
+
+        // Limpa as respostas anteriores apenas das questões erradas para permitir resolvê-las novamente do zero
+        wrongQuestions.forEach(q => {
+          delete quizSelectedAnswers[q.id];
+          delete quizEliminatedOptions[q.id];
+        });
+
+        quizFilterWrongOnly = true;
+        quizIsFinished = false;
+        quizCurrentIndex = 0;
+        quizPendingSelection = null;
+        renderQuizEngine(mat, container);
+        showToast(`Reiniciando ${wrongQuestions.length} questão(ões) errada(s) para nova tentativa!`);
+      });
+
+      document.getElementById("btnReturnDash")?.addEventListener("click", () => {
+        showDashboard();
+      });
+    }
+
+    function renderFlashcardEngine(mat, container) {
+      const allCards = mat.cards || [];
+      if (allCards.length === 0) {
+        container.innerHTML = `<div class="p-8 bg-white rounded-2xl text-center text-xs text-slate-400">Nenhum flashcard cadastrado.</div>`;
+        return;
+      }
+
+      // Filtra apenas os errados se o modo estiver ativo
+      let activeCards = allCards;
+      if (flashcardFilterWrongOnly) {
+        activeCards = allCards.filter(c => flashcardRatings[c.id] === 'wrong');
+        if (activeCards.length === 0) {
+          flashcardFilterWrongOnly = false;
+          activeCards = allCards;
+        }
+      }
+
+      // Conta erros acumulados
+      const wrongCardsCount = allCards.filter(c => flashcardRatings[c.id] === 'wrong').length;
+
+      // Tela de Conclusão dos Flashcards
+      if (flashcardIsFinished) {
+        const mastered = allCards.filter(c => flashcardRatings[c.id] === 'easy' || flashcardRatings[c.id] === 'good').length;
+
+        container.innerHTML = `
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8 space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">Ciclo de Flashcards Concluído</span>
+                <h3 class="text-xl font-black text-petrol-900 mt-1">Desempenho da Rodada</h3>
+                <p class="text-xs text-slate-500">${mat.title}</p>
+              </div>
+              <div class="text-right">
+                <span class="text-3xl font-black text-petrol-900 font-mono">${Math.round((mastered / allCards.length) * 100)}%</span>
+                <div class="text-[11px] text-slate-400 font-medium">taxa de retenção</div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="p-4 rounded-xl border border-rose-200 bg-rose-50/50 flex items-center justify-between">
+                <div>
+                  <div class="text-xs font-bold text-rose-950">Cartões com Dificuldade / Erro</div>
+                  <div class="text-[11px] text-rose-700">precisam de repetição ativa</div>
+                </div>
+                <span class="text-2xl font-black text-rose-700 font-mono">${wrongCardsCount}</span>
+              </div>
+
+              <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50/50 flex items-center justify-between">
+                <div>
+                  <div class="text-xs font-bold text-emerald-950">Cartões Retidos (Bom / Fácil)</div>
+                  <div class="text-[11px] text-emerald-700">conteúdo consolidado</div>
+                </div>
+                <span class="text-2xl font-black text-emerald-700 font-mono">${mastered}</span>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-slate-100">
+              <button id="btnRestartAllFlashcards" class="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-700 hover:bg-slate-50 transition flex items-center justify-center gap-2">
+                <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                <span>Reiniciar Todos os Cartões</span>
+              </button>
+
+              <div class="flex items-center gap-2 w-full sm:w-auto">
+                ${wrongCardsCount > 0 ? `
+                  <button id="btnRedoWrongCards" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold shadow-sm transition flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    <span>Refazer apenas os errados (${wrongCardsCount})</span>
+                  </button>
+                ` : `
+                  <button id="btnReturnDashboardCards" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-petrol-900 hover:bg-petrol-800 text-white text-xs font-bold shadow-sm transition">
+                    Voltar à Visão Geral
+                  </button>
+                `}
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.getElementById("btnRestartAllFlashcards")?.addEventListener("click", () => {
+          flashcardRatings = {};
+          flashcardFilterWrongOnly = false;
+          flashcardCurrentIndex = 0;
+          flashcardIsFlipped = false;
+          flashcardIsFinished = false;
+          renderFlashcardEngine(mat, container);
+          showToast("Flashcards reiniciados!");
+        });
+
+        document.getElementById("btnRedoWrongCards")?.addEventListener("click", () => {
+          flashcardFilterWrongOnly = true;
+          flashcardCurrentIndex = 0;
+          flashcardIsFlipped = false;
+          flashcardIsFinished = false;
+          renderFlashcardEngine(mat, container);
+          showToast(`Iniciando rodada de reforço com ${wrongCardsCount} cartão(ões)!`);
+        });
+
+        document.getElementById("btnReturnDashboardCards")?.addEventListener("click", () => {
+          showDashboard();
+        });
+        return;
+      }
+
+      if (flashcardCurrentIndex >= activeCards.length) {
+        flashcardCurrentIndex = Math.max(0, activeCards.length - 1);
+      }
+
+      const card = activeCards[flashcardCurrentIndex];
+      const currentRating = flashcardRatings[card.id];
+
+      container.innerHTML = `
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8 space-y-6">
+          <div class="flex items-center justify-between text-xs text-slate-500 font-medium">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-petrol-900">Cartão ${flashcardCurrentIndex + 1} de ${activeCards.length}</span>
+              ${flashcardFilterWrongOnly ? `
+                <span class="bg-rose-100 text-rose-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-rose-300 flex items-center gap-1">
+                  <span>Modo: Refazer Erros</span>
+                  <button id="btnExitCardWrongOnly" class="ml-1 text-rose-600 hover:text-rose-900 font-black">✕</button>
+                </span>` : ''}
+            </div>
+
+            <div class="flex items-center gap-2">
+              ${!flashcardFilterWrongOnly && wrongCardsCount > 0 ? `
+                <button id="btnQuickRedoWrongCards" class="text-[11px] font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-2.5 py-1 rounded-lg transition">
+                  Refazer errados (${wrongCardsCount})
+                </button>
+              ` : ''}
+              <span class="font-mono text-blue-600 font-bold bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200">
+                ${Math.round(((flashcardCurrentIndex + 1) / activeCards.length) * 100)}%
+              </span>
+            </div>
+          </div>
+
+          <div class="perspective-1000 w-full min-h-[260px] cursor-pointer" id="flashcardBox">
+            <div class="relative w-full h-full min-h-[260px] transition-transform duration-500 transform-style-preserve-3d rounded-2xl border ${flashcardIsFlipped ? 'rotate-y-180 border-blue-400 shadow-md' : 'border-slate-200 hover:border-slate-300 shadow-xs'}">
+              
+              <!-- Frente -->
+              <div class="absolute inset-0 w-full h-full backface-hidden p-6 md:p-8 flex flex-col justify-between bg-white rounded-2xl">
+                <div class="flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  <span>Frente • Pergunta</span>
+                  ${currentRating === 'wrong' ? '<span class="text-rose-600 font-bold">⚠️ Marcado como Errado</span>' : ''}
+                </div>
+                <div class="text-base md:text-lg font-bold text-petrol-900 text-center my-auto leading-relaxed">${card.front}</div>
+                <div class="text-center text-[11px] text-slate-400 font-medium">Clique no cartão para virar e ver a resposta</div>
+              </div>
+
+              <!-- Verso -->
+              <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 p-6 md:p-8 flex flex-col justify-between bg-blue-50/40 rounded-2xl">
+                <div class="text-[10px] font-bold text-blue-600 uppercase tracking-wider">Verso • Resposta de Fixação</div>
+                <div class="text-sm md:text-base font-semibold text-petrol-950 text-center my-auto leading-relaxed">${card.back}</div>
+                <div class="text-center text-[11px] text-blue-700 font-bold">Autoavalie abaixo para registrar seu domínio</div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Botões de Autoavaliação e Navegação -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100">
+            <button id="btnPrevCard" ${flashcardCurrentIndex === 0 ? 'disabled' : ''} class="px-4 py-2 rounded-xl text-xs font-semibold border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 transition">
+              ← Anterior
+            </button>
+
+            <!-- Avaliação Pedagógica -->
+            <div class="flex items-center gap-2">
+              <button id="btnGradeWrong" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100 transition flex items-center gap-1.5 shadow-xs">
+                <span>✕ Errei</span>
+              </button>
+              <button id="btnGradeGood" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-50 text-amber-800 border border-amber-300 hover:bg-amber-100 transition shadow-xs">
+                <span>⚡ Bom</span>
+              </button>
+              <button id="btnGradeEasy" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 hover:bg-emerald-100 transition shadow-xs">
+                <span>✓ Fácil</span>
+              </button>
+            </div>
+
+            <button id="btnNextCard" class="px-4 py-2 rounded-xl text-xs font-bold bg-petrol-900 text-white hover:bg-petrol-800 transition">
+              ${flashcardCurrentIndex === activeCards.length - 1 ? 'Concluir →' : 'Próximo →'}
+            </button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("flashcardBox")?.addEventListener("click", () => {
+        flashcardIsFlipped = !flashcardIsFlipped;
+        renderFlashcardEngine(mat, container);
+      });
+
+      const recordRatingAndAdvance = (rating) => {
+        flashcardRatings[card.id] = rating;
+        studyStats.flashcards++;
+        document.getElementById("statFlashcards").innerText = studyStats.flashcards;
+
+        if (flashcardCurrentIndex < activeCards.length - 1) {
+          flashcardCurrentIndex++;
+          flashcardIsFlipped = false;
+          renderFlashcardEngine(mat, container);
+        } else {
+          flashcardIsFinished = true;
+          renderFlashcardEngine(mat, container);
+        }
+      };
+
+      document.getElementById("btnGradeWrong")?.addEventListener("click", () => recordRatingAndAdvance('wrong'));
+      document.getElementById("btnGradeGood")?.addEventListener("click", () => recordRatingAndAdvance('good'));
+      document.getElementById("btnGradeEasy")?.addEventListener("click", () => recordRatingAndAdvance('easy'));
+
+      document.getElementById("btnPrevCard")?.addEventListener("click", () => {
+        if (flashcardCurrentIndex > 0) {
+          flashcardCurrentIndex--;
+          flashcardIsFlipped = false;
+          renderFlashcardEngine(mat, container);
+        }
+      });
+
+      document.getElementById("btnNextCard")?.addEventListener("click", () => {
+        if (flashcardCurrentIndex < activeCards.length - 1) {
+          flashcardCurrentIndex++;
+          flashcardIsFlipped = false;
+          renderFlashcardEngine(mat, container);
+        } else {
+          flashcardIsFinished = true;
+          renderFlashcardEngine(mat, container);
+        }
+      });
+
+      document.getElementById("btnQuickRedoWrongCards")?.addEventListener("click", () => {
+        flashcardFilterWrongOnly = true;
+        flashcardCurrentIndex = 0;
+        flashcardIsFlipped = false;
+        renderFlashcardEngine(mat, container);
+        showToast("Filtrando apenas flashcards marcados como 'Errei'!");
+      });
+
+      document.getElementById("btnExitCardWrongOnly")?.addEventListener("click", () => {
+        flashcardFilterWrongOnly = false;
+        flashcardCurrentIndex = 0;
+        flashcardIsFlipped = false;
+        renderFlashcardEngine(mat, container);
+        showToast("Exibindo todos os cartões.");
+      });
+    }
+
+    function renderSummaryEngine(mat, container) {
+      const sections = mat.sections || [];
+      if (sections.length === 0) {
+        container.innerHTML = `<div class="p-8 bg-white rounded-2xl text-center text-xs text-slate-400">Nenhum tópico cadastrado neste resumo.</div>`;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8 space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div>
+              <h3 class="text-base font-bold text-petrol-900">Resumo Conceitual com Lacunas Ativas (Cloze Recall)</h3>
+              <p class="text-xs text-slate-500">Tente lembrar os termos ocultados antes de clicar para revelar.</p>
+            </div>
+            <button id="btnRevealAllClozes" class="text-xs px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold transition">Revelar Tudo</button>
+          </div>
+
+          <div class="space-y-4">
+            ${sections.map((sec, sIdx) => {
+              // Substitui [[termo]] por span clicável
+              const parsedHtml = sec.content.replace(/\[\[(.*?)\]\]/g, (match, word) => {
+                return `<span class="cloze-item cloze-hidden" data-original="${word}">${word}</span>`;
+              });
+
+              return `
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2">
+                  <h4 class="text-xs font-bold text-petrol-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    ${sec.title}
+                  </h4>
+                  <p class="text-xs md:text-sm text-slate-700 leading-relaxed">${parsedHtml}</p>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+
+      document.querySelectorAll(".cloze-item").forEach(el => {
+        el.addEventListener("click", () => {
+          if (el.classList.contains("cloze-hidden")) {
+            el.classList.remove("cloze-hidden");
+            el.classList.add("cloze-revealed");
+          } else {
+            el.classList.add("cloze-hidden");
+            el.classList.remove("cloze-revealed");
+          }
+        });
+      });
+
+      document.getElementById("btnRevealAllClozes")?.addEventListener("click", () => {
+        document.querySelectorAll(".cloze-item").forEach(el => {
+        el.classList.remove("cloze-hidden");
+        el.classList.add("cloze-revealed");
+      });
+    });
+  }
+
+  // Controle da Gaveta (Drawer) para Mobile e Tablet com Null-Safety
+  function openMobileDrawer() {
+    const sidebar = document.getElementById("appSidebar");
+    const backdrop = document.getElementById("sidebarBackdrop");
+    if (sidebar) sidebar.classList.add("mobile-open");
+    if (backdrop) backdrop.classList.remove("hidden");
+    document.body.classList.add("overflow-hidden", "lg:overflow-auto");
+  }
+
+  function closeMobileDrawer() {
+    const sidebar = document.getElementById("appSidebar");
+    const backdrop = document.getElementById("sidebarBackdrop");
+    if (sidebar) sidebar.classList.remove("mobile-open");
+    if (backdrop) backdrop.classList.add("hidden");
+    document.body.classList.remove("overflow-hidden", "lg:overflow-auto");
+  }
+
+  function setupEventListeners() {
+    // Abertura e fechamento da gaveta em dispositivos móveis
+    document.getElementById("btnToggleMobileSidebar")?.addEventListener("click", openMobileDrawer);
+    document.getElementById("btnCloseMobileSidebar")?.addEventListener("click", closeMobileDrawer);
+    document.getElementById("sidebarBackdrop")?.addEventListener("click", closeMobileDrawer);
+
+    // Tecla Escape para fechar gaveta ou modal
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeMobileDrawer();
+        document.getElementById("modalNewMaterial")?.classList.add("hidden");
+      }
+    });
+
+    // Tecla Enter para submeter questão no modo simulado
+    window.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          if (["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName)) return;
+          const modal = document.getElementById("modalNewMaterial");
+          if (!modal.classList.contains("hidden")) return;
+
+          if (currentScreen === "study" && activeStudyTab === "practice") {
+            const btnSubmit = document.getElementById("btnSubmitActiveQuestion");
+            if (btnSubmit && !btnSubmit.disabled) {
+              e.preventDefault();
+              btnSubmit.click();
+            }
+          }
+        }
+      });
+
+      // Alternância de Telas
+      document.getElementById("btnHeaderDashboard").addEventListener("click", showDashboard);
+      document.getElementById("btnSideDashboard").addEventListener("click", showDashboard);
+      document.getElementById("btnBackToDashboard")?.addEventListener("click", showDashboard);
+
+      // Cards de retomada na Dashboard
+      document.querySelectorAll(".resume-study-card").forEach(c => {
+        c.addEventListener("click", () => {
+          const id = c.getAttribute("data-material-id");
+          openMaterialStudy(id);
+        });
+      });
+
+      // Busca na barra lateral
+      document.getElementById("inputSearch").addEventListener("input", (e) => {
+        currentSearchTerm = e.target.value;
+        renderMaterialsList();
+      });
+
+      // Seletor Dropdown limpo
+      document.getElementById("selectFilterScope").addEventListener("change", (e) => {
+        currentFilterScope = e.target.value;
+        renderMaterialsList();
+      });
+
+      // Sanfonas / Accordions da barra lateral
+      document.querySelectorAll(".accordion-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const targetId = btn.getAttribute("data-target");
+          const target = document.getElementById(targetId);
+          const arrow = btn.querySelector(".accordion-arrow");
+          if (target.classList.contains("hidden")) {
+            target.classList.remove("hidden");
+            arrow.classList.remove("-rotate-90");
+          } else {
+            target.classList.add("hidden");
+            arrow.classList.add("-rotate-90");
+          }
+        });
+      });
+
+      // Itens de filtro dentro das sanfonas
+      document.querySelectorAll(".nav-filter-item").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const raw = btn.getAttribute("data-filter");
+          const [key, val] = raw.split(":");
+          if (key === "type") {
+            currentFilterScope = val === "all" ? "all" : `type-${val}`;
+          } else if (key === "category") {
+            currentFilterScope = `cat-${val}`;
+          } else if (key === "rev") {
+            currentFilterScope = `rev-${val}`;
+          }
+          document.getElementById("selectFilterScope").value = currentFilterScope;
+          renderMaterialsList();
+        });
+      });
+
+      // Abas de Estudo (Prática vs Editor JSON)
+      document.getElementById("tabStudy").addEventListener("click", () => {
+        activeStudyTab = "practice";
+        renderStudyTabs();
+      });
+
+      document.getElementById("tabEditor").addEventListener("click", () => {
+        activeStudyTab = "editor";
+        renderStudyTabs();
+      });
+
+      // Autoformatar e Salvar no Editor JSON
+      document.getElementById("btnFormatJson")?.addEventListener("click", () => {
+        const area = document.getElementById("rawJsonEditor");
+        try {
+          const parsed = JSON.parse(area.value);
+          area.value = JSON.stringify(parsed, null, 2);
+          showToast("JSON formatado!");
+        } catch (err) {
+          showToast("Erro: JSON inválido para formatação.");
+        }
+      });
+
+      document.getElementById("btnSaveEditorChanges")?.addEventListener("click", () => {
+        const area = document.getElementById("rawJsonEditor");
+        try {
+          const parsed = JSON.parse(area.value);
+          const idx = studyMaterials.findIndex(m => m.id === activeMaterialId);
+          if (idx !== -1) {
+            studyMaterials[idx] = parsed;
+            updateBadgeCounters();
+            renderMaterialsList();
+            showToast("Alterações salvas com sucesso!");
+          }
+        } catch (err) {
+          showToast("Erro: Verifique a sintaxe JSON.");
+        }
+      });
+
+      // Modal de Novo Material
+      const modalNew = document.getElementById("modalNewMaterial");
+      document.getElementById("btnOpenNewModal").addEventListener("click", () => {
+        modalNew.classList.remove("hidden");
+        document.getElementById("inputMaterialJson").value = JSON.stringify(DEFAULT_TEMPLATES.quiz, null, 2);
+      });
+
+      document.getElementById("btnCloseModal").addEventListener("click", () => modalNew.classList.add("hidden"));
+      document.getElementById("btnCancelModal").addEventListener("click", () => modalNew.classList.add("hidden"));
+
+      document.getElementById("btnTplQuiz").addEventListener("click", () => {
+        document.getElementById("inputMaterialJson").value = JSON.stringify(DEFAULT_TEMPLATES.quiz, null, 2);
+      });
+      document.getElementById("btnTplFlashcard").addEventListener("click", () => {
+        document.getElementById("inputMaterialJson").value = JSON.stringify(DEFAULT_TEMPLATES.flashcard, null, 2);
+      });
+      document.getElementById("btnTplSummary").addEventListener("click", () => {
+        document.getElementById("inputMaterialJson").value = JSON.stringify(DEFAULT_TEMPLATES.summary, null, 2);
+      });
+
+      document.getElementById("btnSaveMaterial").addEventListener("click", () => {
+        const text = document.getElementById("inputMaterialJson").value;
+        try {
+          const parsed = JSON.parse(text);
+          if (!parsed.title || !parsed.type) {
+            showToast("O JSON deve conter pelo menos 'title' e 'type'.");
+            return;
+          }
+          parsed.id = "mat-" + Date.now();
+          studyMaterials.unshift(parsed);
+          updateBadgeCounters();
+          renderMaterialsList();
+          modalNew.classList.add("hidden");
+          openMaterialStudy(parsed.id);
+          showToast("Novo material cadastrado na biblioteca!");
+        } catch (err) {
+          showToast("Sintaxe JSON inválida. Corrija antes de salvar.");
+        }
+      });
+
+      // Exportação Geral
+      document.getElementById("btnExportAll").addEventListener("click", () => {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(studyMaterials, null, 2));
+        const a = document.createElement("a");
+        a.setAttribute("href", dataStr);
+        a.setAttribute("download", `forja_biblioteca_${new Date().toISOString().slice(0, 10)}.json`);
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        showToast("Biblioteca FORJA exportada em arquivo JSON!");
+      });
+    }
+
+    // Inicialização da Página
+    window.onload = function() {
+      updateBadgeCounters();
+      renderMaterialsList();
+      showDashboard();
+      setupEventListeners();
+    };
+  </script>
+</body>
+</html>
